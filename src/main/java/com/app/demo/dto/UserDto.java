@@ -1,32 +1,32 @@
-package com.app.demo.entity;
+package com.app.demo.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name="users")
 @NoArgsConstructor
-@Getter
-@Setter
-public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+
+public class UserDto {
+	
+	
 	private int id;
-	@Column(name="user_name",nullable=false,length=100)
+	@NotEmpty
+	@Size(min=5,message="User name min length must be 5")
 	private String name;
-	
+	@NotEmpty
+	@Email(message="Email id is not valid")
 	private String email;
-	
+	@NotEmpty
+	@Size(min=3,max=10,message="Password must be min of 3 char and max of 10 characters")
+	//@Pattern(regexp="")
 	private String password;
-	private String about ;
+	@NotEmpty
+	@Size(min = 20,message="About must me minimum 20 characters")
+	private String about;
 	public int getId() {
 		return id;
 	}
@@ -57,6 +57,7 @@ public class User {
 	public void setAbout(String about) {
 		this.about = about;
 	}
+	
 	
 
 }
