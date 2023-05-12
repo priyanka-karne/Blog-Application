@@ -1,4 +1,4 @@
-package com.app.demo.serviceImpl;
+ package com.app.demo.serviceImpl;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryDto> getCategory() {
 		
 		List<Category> category=this.crepo.findAll();
-		List<CategoryDto> categoryDto=category.stream().map((cat)->this.modelmapper.map(cat, CategoryDto.class)).collect(Collectors.toList());
+		List<CategoryDto> categoryDto=category.stream().map((cat)->this.categoryToDto(cat)).collect(Collectors.toList());
 		return categoryDto; 
 	}
 
