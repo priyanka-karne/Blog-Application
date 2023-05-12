@@ -4,9 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
+
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 
@@ -22,11 +21,14 @@ public class UserDto {
 	private String email;
 	@NotEmpty
 	@Size(min=3,max=10,message="Password must be min of 3 char and max of 10 characters")
-	//@Pattern(regexp="")
+	
 	private String password;
 	@NotEmpty
 	@Size(min = 20,message="About must me minimum 20 characters")
 	private String about;
+	
+	
+	
 	public int getId() {
 		return id;
 	}
