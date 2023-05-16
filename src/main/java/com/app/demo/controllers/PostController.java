@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.demo.apiResponce.ApiResponce;
 import com.app.demo.dto.PostDto;
+import com.app.demo.dto.PostResponse;
 import com.app.demo.entity.Post;
 import com.app.demo.service.PostService;
 
@@ -46,11 +48,14 @@ public class PostController {
 		List<PostDto> post=this.pservice.getAllPostByCategory(cId);
 		return new ResponseEntity<List<PostDto>>(post,HttpStatus.OK);
 	}
+	// to get parameter we use request param
 	
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDto>> getAllPost(){
-		List<PostDto>pdto=this.pservice.getAllPost();
-		return new ResponseEntity<List<PostDto>>(pdto,HttpStatus.OK);
+	public ResponseEntity<PostResponse> getAllPost(@RequestParam(value="pageNumber",defaultValue="0",required=false) Integer pageNumber,
+			@RequestParam(value="pageSize",defaultValue="10",required=false) Integer pageSize, 
+			@RequestParam (value="sortBy", defaultValue =  "PostId",required = false) String sortBy){
+		PostResponse prepo=this.pservice.getAllPost(pageNumber,pageSize,sortBy);
+		return new ResponseEntity<PostResponse>(prepo,HttpStatus.OK);
 	}
 	
 	@GetMapping("/posts/{postId}")

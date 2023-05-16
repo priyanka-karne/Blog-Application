@@ -1,14 +1,20 @@
 package com.app.demo.serviceImpl;
 
 import java.util.Date;
-import java.util.List;import java.util.stream.Collector;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.app.demo.entity.Category;
+
 import com.app.demo.dto.PostDto;
+import com.app.demo.dto.PostResponse;
+import com.app.demo.entity.Category;
 import com.app.demo.entity.Post;
 import com.app.demo.entity.User;
 import com.app.demo.exception.ResourceNotFoundException;
@@ -70,10 +76,25 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost() {
-	      List<Post> post=this.postRepo.findAll();
+	public PostResponse getAllPost(Integer pageNumber , Integer pageSize , String sortBy) {
+		
+		
+		Pageable p=PageRequest.of(pageNumber, pageSize,Sort.by(sortBy));
+		
+	      Page<Post> pagePost=this.postRepo.findAll(p);
+	      List<Post> post=pagePost.getContent();
 	      List<PostDto> pdto=post.stream().map((pos)->this.modelmapper.map(pos, PostDto.class)).collect(Collectors.toList());
-		return pdto;
+	      
+	      PostResponse presp= new PostResponse();
+	      presp.setContent(pdto);
+	      presp.setPageNumber(pagePost.getNumber());
+	      presp.setPageSize(pagePost.getSize());
+	      presp.setTotalElements(pagePost.getTotalElements());
+	      presp.setTotalPage(pagePost.getTotalPages());
+	      presp.setLastPage(pagePost.isLast());
+	      
+	      
+		return presp;
 	}
 
 	@Override
@@ -106,7 +127,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostDto> searchPosts(String keywords) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 
